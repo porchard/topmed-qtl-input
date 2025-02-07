@@ -91,6 +91,7 @@ process to_parquet {
     cache 'lenient'
     maxRetries 3
     errorStrategy {task.attempt <= maxRetries ? 'retry' : 'ignore'}
+    container 'docker://porchard/general:20230411143108'
 
     input:
     tuple val(tissue), path(x)
@@ -110,6 +111,7 @@ process compute_masks {
     publishDir "${params.results}/masks"
     memory '100 GB'
     cache 'lenient'
+    container 'docker://porchard/general:20230411143108'
 
     input:
     tuple val(tissue), path(x)
@@ -151,6 +153,7 @@ process examine_samples_supporting_each_intron {
     cache 'lenient'
     maxRetries 4
     errorStrategy {task.attempt <= maxRetries ? 'retry' : 'ignore'}
+    container 'docker://porchard/general:20230411143108'
 
     input:
     tuple val(tissue), path(samples), path(junction_files_dir)
