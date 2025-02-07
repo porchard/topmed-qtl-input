@@ -25,7 +25,7 @@ process make_tensorqtl_in {
 	path("${tissue}.tensorqtl-in.phenotypes.bed.gz")
 
 	"""
-	tensorqtl-in-trans-sqtl.py --genotype-pcs 15 --min-phenotype-pcs 0 --max-phenotype-pcs 50 --phenotype-pcs-step 1 $samples $leafcutter_phenotypes $metadata $genotype_pca ${tissue}.
+	tensorqtl-in-trans-sqtl.py --genotype-pcs 10 --min-phenotype-pcs 0 --max-phenotype-pcs 50 --phenotype-pcs-step 1 $samples $leafcutter_phenotypes $metadata $genotype_pca ${tissue}.
 	"""
 
 }
