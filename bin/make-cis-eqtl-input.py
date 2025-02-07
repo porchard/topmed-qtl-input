@@ -138,6 +138,7 @@ phenotypes = phenotype_locations.join(phenotypes, how='inner')
 genotype_pcs = pd.read_csv(GENOTYPE_PCA, sep='\t', index_col=0).rename_axis(index='wgs').reset_index()
 genotype_pcs = genotype_pcs[genotype_pcs.wgs.isin(phenotypes.columns)].set_index('wgs')
 genotype_pcs.columns = ['genotype_{}'.format(i) for i in genotype_pcs.columns]
+genotype_pcs = genotype_pcs[[f'genotype_PC{i}' for i in range(1, args.genotype_pcs+1)]]
 # verify that all samples appear in the genotype PCA
 assert(len([i for i in samples if tor_to_wgs[i] not in set(genotype_pcs.index)]) == 0)
 
@@ -161,4 +162,4 @@ for phenotype_pcs in PHENOTYPE_PCS:
         logging.warning(f"Skipping covariate file with {phenotype_pcs} phenotype PCs (there aren't that many)")
         continue
     covariates_with_phenotype_pcs = covariates.copy() if phenotype_pcs == 0 else covariates.join(phenotype_pca[[f'phenotype_PC{i}' for i in range(1, phenotype_pcs+1)]])
-    covariates_with_phenotype_pcs.loc[SAMPLE_ORDER,:].T.to_csv(f'{PREFIX}tensorqtl-in.{phenotype_pcs}.covariates.tsv', sep='\t')    
+    covariates_with_phenotype_pcs.loc[SAMPLE_ORDER,:].T.to_csv(f'{PREFIX}tensorqtl-in.{phenotype_pcs}.covariates.tsv', sep='\t')

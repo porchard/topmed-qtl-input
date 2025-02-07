@@ -15,10 +15,10 @@ process make_tensorqtl_in {
 
 	publishDir "${params.results}/tensorqtl-in", pattern: "*.tensorqtl-in.*"
     publishDir "${params.results}/pca", pattern: "*.PC-*"
-	clusterOptions='--partition=topmed-working --exclude=topmed,topmed2,topmed[3-9],topmed11'
     tag "${tissue}"
 	memory '50 GB'
 	time '168h'
+	container 'docker://porchard/general:20230411143108'
 
 	input:
 	tuple val(tissue), path(samples), path(mappability), path(tpm), path(counts), path(metadata), path(gtf), path(genotype_pca)
@@ -31,7 +31,7 @@ process make_tensorqtl_in {
 	MAX_PCS = MAX_NUMBER_PCS.keySet().contains(tissue) ? MAX_NUMBER_PCS[tissue] : 100
 
 	"""
-	sample-list-to-tensorqtl-in.py --min-mappability 0.5 --mappability-scores $mappability --genotype-pcs 10 --min-phenotype-pcs 0 --max-phenotype-pcs $MAX_PCS --phenotype-pcs-step 5 $samples $tpm $counts $metadata $gtf $genotype_pca ${tissue}.
+	make-cis-eqtl-input.py --min-mappability 0.5 --mappability-scores $mappability --genotype-pcs 10 --min-phenotype-pcs 0 --max-phenotype-pcs $MAX_PCS --phenotype-pcs-step 5 $samples $tpm $counts $metadata $gtf $genotype_pca ${tissue}.
 	"""
 
 }
