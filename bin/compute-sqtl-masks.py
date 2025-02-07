@@ -1,23 +1,15 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[ ]:
 
-
-import os
 import sys
 import pandas as pd
 import numpy as np
-import glob
-import re
 
 PARQUET_COUNT_MATRIX = sys.argv[1]
 OUT = sys.argv[2]
 
 mat = pd.read_parquet(PARQUET_COUNT_MATRIX)
-
-
-# In[ ]:
 
 
 def get_masks(counts_df):
@@ -44,9 +36,5 @@ def get_masks(counts_df):
     return mask_df
 
 
-# In[ ]:
-
-
 masked = get_masks(mat)
 masked.to_parquet(OUT)
-
